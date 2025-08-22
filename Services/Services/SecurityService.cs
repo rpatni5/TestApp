@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using TestApp.Models;
 using TestApp.Models.Entities;
+using TestApp.Models.View_Models;
 using TestApp.Services.Data;
 
 namespace TestApp.Services.Services
@@ -15,6 +16,12 @@ namespace TestApp.Services.Services
         public ApplicationUsers Authenticate(UserModel model)
         {
            var result =  securityDao.FindByUser(model.UserName, model.Password);
+            return result;
+        }
+
+        public ApplicationUsers Register(SignupModel model)
+        {
+            var result = securityDao.Register(model);
             return result;
         }
     }

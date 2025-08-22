@@ -16,17 +16,18 @@ namespace TestApp.Controllers
             return View("Login");
         }
 
-        public string Login(UserModel model)
+        public JsonResult Login(UserModel model)
         {
             SecurityService securityService = new SecurityService();
             var user = securityService.Authenticate(model);
+
             if (user != null)
             {
-                return "Login successful!";
+                return Json(new { success = true, message = "Login successful!", data = user });
             }
             else
             {
-                return "Login failed. Please check your username and password.";
+                return Json(new { success = false, message = "Login failed. Please check your username and password."});
             }
         }
     }

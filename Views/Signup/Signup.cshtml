@@ -1,0 +1,113 @@
+﻿@model TestApp.Models.View_Models.SignupModel
+
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/AuthLayout.cshtml";
+}
+
+<div class="d-flex align-items-center justify-content-center vh-100" style="background-color: #007B8F;">
+    <div class="card shadow-lg border-0 rounded-3" style="width: 100%; max-width: 650px;">
+        <div class="card-header bg-white text-center border-0">
+            <h3 class="fw-bold text-dark mb-0">Sign Up</h3>
+        </div>
+
+        <div class="card-body px-5 py-5">
+            <div id="signupMsg" class="mb-3"></div>
+
+            @using (Html.BeginForm("", "", FormMethod.Post, new { id = "signupForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3 mb-3">
+                    <div class="col">
+                        @Html.LabelFor(m => m.FirstName, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control form-control-lg", placeholder = "First Name" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col">
+                        @Html.LabelFor(m => m.LastName, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control form-control-lg", placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col">
+                        @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col">
+                        @Html.LabelFor(m => m.Username, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control form-control-lg", placeholder = "Username" })
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col">
+                        @Html.LabelFor(m => m.Password, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = "Password", id = "PasswordInput" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col">
+                        @Html.LabelFor(m => m.ConfirmPassword, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-lg", placeholder = "Confirm Password", id = "ConfirmPasswordInput" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg w-100" id="signupBtn">Sign Up</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function () {
+
+        // Disable submit until passwords match
+        function checkPasswords() {
+            const pass = $("#PasswordInput").val();
+            const confirm = $("#ConfirmPasswordInput").val();
+            $("#signupBtn").prop("disabled", !(pass && confirm && pass === confirm));
+        }
+
+        $("#PasswordInput, #ConfirmPasswordInput").on("input", checkPasswords);
+
+        // AJAX form submit
+        $("#signupForm").submit(function (e) {
+            e.preventDefault(); // prevent page reload
+
+            var form = $(this);
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            $.ajax({
+                url: '@Url.Action("Register", "Signup")',
+                type: 'POST',
+                data: form.serialize(),
+                headers: { 'RequestVerificationToken': token },
+                success: function (response) {
+                    if (response.success) {
+                        $("#signupMsg").html('<div class="alert alert-success">Registration successful!</div>');
+                        form[0].reset();
+                        $("#signupBtn").prop("disabled", true);
+                         setTimeout(function () {
+                             window.location.href = '@Url.Action("Index", "Dashboard")';
+                        }, 1000);
+                    } else {
+                        $("#signupMsg").html('<div class="alert alert-danger">' + response.message + '</div>');
+                    }
+                },
+                error: function () {
+                    $("#signupMsg").html('<div class="alert alert-danger">Something went wrong. Try again.</div>');
+                }
+            });
+        });
+    });
+    </script>
+}

@@ -23,6 +23,17 @@ namespace TestApp
                url: "{controller}",
                defaults: new { controller = "login", action = "Login", id = UrlParameter.Optional }
            );
+            routes.MapRoute(
+                 name: "Signup",
+                 url: "signup",
+                 defaults: new { controller = "Signup", action = "Signup"}
+            );
+
+            routes.MapRoute(
+                  name: "CatchAll",
+                 url: "{*url}",
+                 defaults: new { controller = "Login", action = "Index" }
+             );
         }
     }
 }
