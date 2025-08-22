@@ -19,8 +19,8 @@ namespace TestApp.Controllers
         public string Login(UserModel model)
         {
             SecurityService securityService = new SecurityService();
-            Boolean success = securityService.Authenticate(model);
-            if (success)
+            var user = securityService.Authenticate(model);
+            if (user != null)
             {
                 return "Login successful!";
             }

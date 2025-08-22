@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using TestApp.Models;
+using TestApp.Models.Entities;
 
 namespace TestApp.Services.Data
 {
     public class SecurityDao
     {
-        public bool FindByUser(string userName, string password)
+        public ApplicationUsers FindByUser(string userName, string password)
         {
-            if (userName == "admin" && password == "password")
+            using (var context = new TestAppContext())
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                return context.ApplicationUsers
+                              .FirstOrDefault(u => u.UserName == userName
+                                                && u.Password == password
+                                                && !u.IsDeleted);
             }
         }
     }
