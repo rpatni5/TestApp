@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TestApp.Models;
+using TestApp.Models.Entities;
 using TestApp.Services.Data;
 
 namespace TestApp.Services.Services
@@ -11,9 +12,10 @@ namespace TestApp.Services.Services
     {
         SecurityDao securityDao =   new SecurityDao();
 
-        public bool Authenticate(UserModel model)
+        public ApplicationUsers Authenticate(UserModel model)
         {
-            return securityDao.FindByUser(model.UserName, model.Password);
+           var result =  securityDao.FindByUser(model.UserName, model.Password);
+            return result;
         }
     }
 }   
