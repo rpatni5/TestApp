@@ -1,7 +1,26 @@
-﻿
+﻿@model TestApp.Models.View_Models.EmbedReport
 @{
     ViewBag.Title = "Dashboard";
 }
 
 <h2>Dashboard</h2>
 
+<div id="reportContainer" style="height:600px; width:100%;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.25.0/dist/powerbi.min.js"></script>
+<script>
+    var embedConfig = {
+        type: 'report',
+        tokenType: powerbi.models.TokenType.Embed,
+        accessToken: '@Model.AccessToken',
+        embedUrl: '@Model.EmbedUrl',
+        id: '@Model.ReportId',
+        settings: {
+            filterPaneEnabled: false,
+            navContentPaneEnabled: false
+        }
+    };
+
+    var reportContainer = document.getElementById('reportContainer');
+    var report = powerbi.embed(reportContainer, embedConfig);
+</script>

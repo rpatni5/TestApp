@@ -7,24 +7,21 @@
 
 <div class="d-flex align-items-center justify-content-center vh-100" style="background-color: #007B8F;">
     <div class="card shadow-lg border-0 rounded-3" style="width: 100%; max-width: 620px;">
-        <!-- broader card -->
         <div class="card-header bg-white text-center border-0">
             <h3 class="fw-bold text-dark mb-0">Login</h3>
         </div>
 
         <div class="card-body px-5 py-5">
-            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
-            {
+            <form id="loginForm" onsubmit="loginUser(); return false;">
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+                <div id="errorMessage" class="text-danger mb-3"></div>
 
                 <!-- Email or Username -->
                 <div class="form-group mb-4">
                     @Html.Label("UsernameOrEmail", "Email or Username", htmlAttributes: new { @class = "form-label fw-semibold" })
                     <div class="input-group input-group-lg">
-                        <!-- larger input group -->
                         <span class="input-group-text bg-light"><i class="fa fa-user"></i></span>
-                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "Enter email or username" })
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "Enter email or username", id = "UserName" })
                     </div>
                     @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 </div>
@@ -52,12 +49,12 @@
                     <a href="#">Forgot Password?</a><br />
                     <span>Don't have an account? <a href="/signup">Sign up</a></span>
                 </div>
-            }
+            </form>
         </div>
     </div>
 </div>
 
-<!-- Password Eye Toggle -->
+<!-- Password Eye Toggle and AJAX Script -->
 <script>
     document.getElementById("togglePassword").addEventListener("click", function () {
         const passwordInput = document.getElementById("PasswordInput");
@@ -73,4 +70,32 @@
             toggleIcon.classList.add("fa-eye");
         }
     });
+
+    function loginUser() {
+        var token = $('input[name="__RequestVerificationToken"]').val(); // CSRF token
+        var model = {
+            UserName: $('#UserName').val(),
+            Password: $('#PasswordInput').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/Login/Login',
+            data: {
+                __RequestVerificationToken: token,
+                UserName: model.UserName,
+                Password: model.Password
+            },
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = '/Dashboard/Index';
+                } else {
+                    $('#errorMessage').text(response.message);
+                }
+            },
+            error: function () {
+                $('#errorMessage').text("An error occurred while logging in.");
+            }
+        });
+    }
 </script>

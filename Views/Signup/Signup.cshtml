@@ -70,7 +70,6 @@
     <script>
     $(document).ready(function () {
 
-        // Disable submit until passwords match
         function checkPasswords() {
             const pass = $("#PasswordInput").val();
             const confirm = $("#ConfirmPasswordInput").val();
@@ -79,9 +78,8 @@
 
         $("#PasswordInput, #ConfirmPasswordInput").on("input", checkPasswords);
 
-        // AJAX form submit
         $("#signupForm").submit(function (e) {
-            e.preventDefault(); // prevent page reload
+            e.preventDefault();
 
             var form = $(this);
             var token = $('input[name="__RequestVerificationToken"]', form).val();
@@ -93,11 +91,13 @@
                 headers: { 'RequestVerificationToken': token },
                 success: function (response) {
                     if (response.success) {
-                        $("#signupMsg").html('<div class="alert alert-success">Registration successful!</div>');
+                        $("#signupMsg").html('<div class="alert alert-success">Registration successful! Redirecting...</div>');
                         form[0].reset();
                         $("#signupBtn").prop("disabled", true);
-                         setTimeout(function () {
-                             window.location.href = '@Url.Action("Index", "Dashboard")';
+
+                        // ✅ Redirect to dashboard after delay
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("Index", "Dashboard")';
                         }, 1000);
                     } else {
                         $("#signupMsg").html('<div class="alert alert-danger">' + response.message + '</div>');
@@ -110,4 +110,5 @@
         });
     });
     </script>
-}
+    }
+

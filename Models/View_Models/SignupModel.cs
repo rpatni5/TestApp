@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-
-namespace TestApp.Models.View_Models
+﻿namespace TestApp.Models.View_Models
 {
     public class SignupModel
     {
