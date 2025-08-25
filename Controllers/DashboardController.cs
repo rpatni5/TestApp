@@ -20,14 +20,14 @@ namespace TestApp.Controllers
 
         public async Task<ActionResult> Index()
         {
-            string accessToken = await _powerBIService.GetAccessTokenAsync();
-            var report = await _powerBIService.GetReportAsync(workspaceId, reportId, accessToken);
+            //string accessToken = await _powerBIService.GetAccessTokenAsync();
+            //var report = await _powerBIService.GetReportAsync(workspaceId, reportId, accessToken);
 
             var model = new EmbedReport
             {
-                AccessToken = accessToken,
-                EmbedUrl = report["embedUrl"].ToString(),
-                ReportId = report["id"].ToString()
+                //AccessToken = accessToken,
+                //EmbedUrl = report["embedUrl"].ToString(),
+                //ReportId = report["id"].ToString()
             };
 
             return View(model);
