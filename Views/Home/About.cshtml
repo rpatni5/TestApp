@@ -1,9 +1,36 @@
 ﻿@{
     ViewBag.Title = "About";
+    ViewBag.Message = "Learn more about our company";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <p>Use this area to provide additional information.</p>
+<main class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2 text-center">
+            <h1 class="display-4 mb-4">@ViewBag.Title</h1>
+            <p class="lead text-muted">@ViewBag.Message</p>
+
+            <hr class="my-4">
+
+            <p class="fs-5">
+                Welcome to our About page! We are passionate about delivering quality and innovation.
+                Our mission is to create impactful solutions that benefit our users and communities.
+            </p>
+
+            <div class="mt-5">
+                <h3>Our Values</h3>
+                <ul class="list-group list-group-flush text-start mt-3">
+                    <li class="list-group-item">✅ Integrity in everything we do</li>
+                    <li class="list-group-item">🚀 Innovation that drives results</li>
+                    <li class="list-group-item">🤝 Collaboration and teamwork</li>
+                    <li class="list-group-item">🌍 Commitment to sustainability</li>
+                </ul>
+            </div>
+
+            <div class="mt-5">
+                <a href="~/Home/Contact" class="btn btn-primary btn-lg">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
 </main>

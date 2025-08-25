@@ -26,7 +26,7 @@ namespace TestApp
             routes.MapRoute(
                  name: "Signup",
                  url: "signup",
-                 defaults: new { controller = "Signup", action = "Signup"}
+                 defaults: new { controller = "Signup", action = "Signup" }
             );
 
             routes.MapRoute(
@@ -34,6 +34,12 @@ namespace TestApp
                  url: "{*url}",
                  defaults: new { controller = "Login", action = "Index" }
              );
+
+            routes.MapRoute(
+                 name: "Dashboard",
+                url: "{*url}",
+                defaults: new { controller = "Dashboard", action = "Index" }
+            );
         }
     }
 }
